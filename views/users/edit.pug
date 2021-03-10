@@ -1,0 +1,37 @@
+extends ../layouts/common
+
+block content
+	h1 Edit profile
+
+	if errors
+		each error in errors
+			.alert.alert-danger= error
+
+	form(action="/users/edit", method="POST", enctype="multipart/form-data")
+		.form-group
+			label Username
+			input.form-control(type="text", name="username", value = user.username,autocomplete="off")
+		.form-group
+			label New password
+			input.form-control(type="password", name="password")
+		.form-group
+			label Display Name
+			input.form-control(type="text", name="displayName", value = user.displayName, autocomplete="off")
+		.form-group
+			label Phone
+			input.form-control(type="text", name="phone", value = user.phone, autocomplete="off")
+		.form-group.mt-2
+			label Avatar
+			span &nbsp
+			img.ml-6(src=user.avatar || "/images/default.logo", height= 200)
+			//- span &nbsp
+			//- form(action="/users/edit", method="POST")
+			//- 	button.btn.btn-secondary.mt-2 Delete
+		.form-group.mt-2
+			label New
+			span &nbsp
+			input.form-control-file(type="file", name="avatar")
+		button.btn.btn-primary.mt-2 Save
+		span &nbsp
+		form(action="/", method="GET")
+			button.btn.btn-secondary.mt-2 Cancel

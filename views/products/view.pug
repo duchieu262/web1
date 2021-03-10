@@ -1,0 +1,36 @@
+extends ../layouts/common
+block content 
+	h1 View product
+
+	.card.mt-5
+		.d-flex
+			img(src=product.image, alt='...', width= 500)
+			h1 &nbsp
+			h5 Description:
+			h1 &nbsp
+			h6.card-text= product.description
+		.card-body
+			h5.card-title= product.name
+			h2.card-text= product.price + '$'
+			a.btn.btn-primary(href='/cart/add/'+product.id) Add to cart
+
+
+
+
+	
+	table.table
+		// tr
+		// 	th avatar
+		// 	th name
+		// 	th comment
+		if product.comments
+			each comment in product.comments
+				tr
+					td
+						img(src=comment.avatar || "/images/default.logo", width=32)
+					td=comment.name || "Guest"
+					td=comment.body
+
+	form(action="/products/comment/"+product.id, method="POST", class='d-flex')
+		input(type='text',name='comment', class='form-control', autocomplete="off")
+		button(class="ml-20") Comment

@@ -1,0 +1,51 @@
+extends ../layouts/common.pug
+
+block content
+	h1 Products
+
+	.d-flex.align-items-center
+		form.ml-auto(action="/products/search", method="GET", class="d-flex")
+			input(type='text', name="q", class="form-control", value = query, autocomplete="off")
+			span &nbsp
+			button(class="btn btn-primary ml-2") Search
+			span &nbsp
+	label= query ? size + " result for " + '"' + query + '"' : ""
+
+	
+	.row
+		each product in products
+			.col-sm-6.col-md-4.col-lg-3
+				.card
+					img.card-img-top(height=250,src=product.image, alt='...')
+					.card-body
+						h6.card-title()= product.name
+						h2.card-text= product.price +'$'
+						//- a.btn.btn-primary(href='/cart/add/'+product.id) Add to cart
+						a.btn.btn-primary(href='#') Buy
+						span &nbsp
+						a.btn.btn-primary(href='/products/'+product.id) View
+
+
+
+	nav(aria-label='Page navigation example')
+		span &nbsp
+		ul.pagination.justify-content-center
+			if currentPage !== 1 
+				li.page-item
+					a.page-link(href= query ? 
+				'/products/search?page=' + (currentPage - 1) +'&q=' + query : 
+				'/products?page=' + (currentPage - 1)) Previous
+				li.page-item
+					a.page-link(href= query ? 
+				'/products/search?page=' + (currentPage - 1) +'&q=' + query : 
+				'/products?page=' + (currentPage - 1))=currentPage-1
+			li.page-item.active
+				a.page-link(href='/products?page=' + currentPage)=currentPage
+			li.page-item
+				a.page-link(href= query ? 
+				'/products/search?page=' + (currentPage + 1) +'&q=' + query : 
+				'/products?page=' + (currentPage + 1))=currentPage+1
+			li.page-item
+				a.page-link(href= query ? 
+				'/products/search?page=' + (currentPage + 1) +'&q=' + query : 
+				'/products?page=' + (currentPage + 1)) Next

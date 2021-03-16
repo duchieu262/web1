@@ -1,12 +1,12 @@
 var db = require('../db');
+var User = require('../models/user.model')
 
-function login(req) {
+async function login(req) {
 	if(!req.signedCookies.userId){
 		return ;
 	}
 	else{
-		var user= db.get('users')
-				.find({id: req.signedCookies.userId}).value();
+		var user= await User.findById(req.signedCookies.userId);
 		return user;
 	}
 }

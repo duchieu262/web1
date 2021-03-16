@@ -1,11 +1,10 @@
 var db = require('../db');
 var login = require('./function')
+var User = require('../models/user.model')
 
-module.exports.postCreate = function(req, res, next) {
+module.exports.postCreate = async function(req, res, next) {
 	var errors = [];
-	if(db.get('users')
-		.find({ username: req.body.username})
-		.value()) {
+	if( await User.findOne({username: req.body.username})) {
 		errors.push('Username already exists')
 	}
 	if (!req.body.username){
@@ -21,6 +20,7 @@ module.exports.postCreate = function(req, res, next) {
 		errors.push('Display name is required.')
 	}
 	if(errors.length){
+		console.log('post')
 		console.log(req.body)
 		res.render('users/create',{
 			errors: errors,
@@ -31,14 +31,14 @@ module.exports.postCreate = function(req, res, next) {
 	next();
 }
 
-module.exports.postEdit = function(req, res, next) {
+module.exports.postEdit = async function(req, res, next) {
 	var errors = [];
-	if(req.body.username !== login.login(req).username)
-		if(db.get('users')
-			.find({ username: req.body.username})
-			.value()) {
-			errors.push('Username already exists')
+	user = await login.login(req)
+	if(req.body.username !== user.username){
+		if( await User.findOne({username: req.body.username})) {
+		errors.push('Username already exists')
 		}
+	}
 	if (!req.body.username){
 		errors.push('Username is required.');
 	}
@@ -49,7 +49,6 @@ module.exports.postEdit = function(req, res, next) {
 		errors.push('Display name is required.')
 	}
 	if(errors.length){
-		console.log(req.body)
 		res.render('users/edit',{
 			errors: errors,
 			values: req.body

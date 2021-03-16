@@ -1,21 +1,24 @@
 var db = require('../db');
 var login = require('../validate/function.js')
+var Product = require('../models/product.model')
+var User = require('../models/user.model')
 
-module.exports.index = function(req, res){
+
+module.exports.index = async function(req, res){
 	var page = parseInt(req.query.page) || 1;
 	var perPage = 8;
 	var start = (page - 1) * perPage;
 	var end = page * perPage;
-	user = login.login(req);
-	var user= login.login(req);
+	user = await login.login(req);
+	products = await Product.find()
 	res.render('products/index', {
-	products: db.get('products').value().slice(start, end),
+	products: products.slice(start, end),
 	currentPage: page,
 	user: user
 	});
 };
 
-module.exports.search = function(req, res){	
+module.exports.search = async function(req, res){	
 	var page = parseInt(req.query.page) || 1;
 	var perPage = 8;
 	var start = (page - 1) * perPage;
@@ -23,16 +26,13 @@ module.exports.search = function(req, res){
 	var q = req.query.q
 	
 	if (q) {
-		var matchedProducts = db.get('products').value().filter(function(product){
-			return product.name.toLowerCase().indexOf(q.toLowerCase()) !== -1;
-		});
-		size = db.get('products').filter(function(product){
-			return product.name.toLowerCase().indexOf(q.toLowerCase()) !== -1;
-		}).size().value();
-		user = login.login(req);
+		var matchedProducts = await Product.findOne({ name: "Quail - Eggs, Fresh"})
+		console.log(typeof(matchedProducts))
+		size = 1
+		user = await login.login(req);
 		res.render('products/index', {
 			query: q,
-			products: matchedProducts.slice(start, end),
+			products: matchedProducts,
 			user: user,
 			currentPage: page,
 			size: size
@@ -45,12 +45,10 @@ module.exports.search = function(req, res){
 }
 
 
-module.exports.get = function(req, res){
+module.exports.get = async function(req, res){
 	var id = req.params.id;
-	var product = db.get('products').find({ id: id}).value();
-	user = login.login(req);
-	var user= db.get('users')
-			.find({id: req.signedCookies.userId}).value();
+	var product = await Product.findById(id)
+	user = await login.login(req);
 	res.render('products/view', {
 	product: product,
 	user: user
@@ -58,36 +56,19 @@ module.exports.get = function(req, res){
 
 };
 
-module.exports.postComment = function(req, res) {	
+module.exports.postComment = async function(req, res) {	
 	var id = req.params.id;
-	var comment = {body: req.body.comment};
-	var user = login.login(req);
+	var body = req.body.comment;
+	var user = await login.login(req);
 	if(user){
-		comment.avatar = user.avatar;
-		comment.name = user.displayName;
+		avatar = user.avatar;
+		name = user.displayName;
 	}
 
+	product = await Product.findById(id)
+	product.comments.push({name, avatar, body})
+	await product.save()
 
-	comments = db
-		.get('products')
-		.find({ id: id})
-		.get('comments')
-		.value();
-	if (!comments) {
-		db.get('products')
-			.find({ id: id})
-			.set('comments', [])
-			.get('comments')
-			.push(comment)
-			.write()
-	}
-	else{
-		db.get('products')
-			.find({ id: id})
-			.get('comments')
-			.push(comment)
-			.write()
-	}
-	var product = db.get('products').find({ id: id}).value();
+	console.log(product.comments)
 	res.redirect('/products/'+id);
 }

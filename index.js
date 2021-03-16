@@ -3,7 +3,9 @@ require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost/web1')
 
 var userRoute = require('./routes/user.route');
 var authRoute = require('./routes/auth.route');
@@ -43,6 +45,9 @@ app.use('/auth', authRoute);
 app.use('/products', productRoute);
 app.use('/cart', cartRoute);
 app.use('/logOut', authMiddleware.requireAuth, logOutRoute);
+
+
+
 
 app.listen(port, function(){
 	console.log('Server listening on port ' + port)

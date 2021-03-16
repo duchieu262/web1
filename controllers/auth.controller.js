@@ -1,5 +1,6 @@
 var md5 = require('md5');
 var db = require('../db');
+var User = require('../models/user.model')
 
 module.exports.login = function(req, res){
 	if(req.signedCookies.userId){
@@ -8,12 +9,12 @@ module.exports.login = function(req, res){
 	res.render('auth/login');
 };
 
-module.exports.postLogin = function(req, res){
+module.exports.postLogin = async function(req, res){
 	var username = req.body.username;
 	var password = req.body.password;
 	var hashedPassword = md5(password);
 
-	var user = db.get('users').find({username: username}).value();
+	var user = await User.findOne({username: username})
 	if(!user){
 		res.render('auth/login', {
 			errors: [
@@ -26,7 +27,7 @@ module.exports.postLogin = function(req, res){
 
 
 	if(user.password == hashedPassword) {
-		res.cookie('userId', user.id, {
+		res.cookie('userId', user._id.toString(), {
 			signed: true
 		});
 		res.redirect('/products');

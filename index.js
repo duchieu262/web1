@@ -10,7 +10,6 @@ mongoose.connect('mongodb://localhost/web1')
 var userRoute = require('./routes/user.route');
 var authRoute = require('./routes/auth.route');
 var productRoute = require('./routes/product.route');
-var cartRoute = require('./routes/cart.route');
 var logOutRoute = require('./routes/logout.route');
 var rigisterRoute = require('./routes/rigister.route')
 
@@ -43,7 +42,6 @@ app.use('/users', authMiddleware.requireAuth, userRoute);
 app.use('/register', rigisterRoute)
 app.use('/auth', authRoute);
 app.use('/products', productRoute);
-app.use('/cart', cartRoute);
 app.use('/logOut', authMiddleware.requireAuth, logOutRoute);
 
 

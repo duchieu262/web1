@@ -1,4 +1,3 @@
-var db = require('../db');
 var login = require('../validate/function.js')
 var Product = require('../models/product.model')
 var User = require('../models/user.model')
@@ -60,6 +59,8 @@ module.exports.postComment = async function(req, res) {
 	var id = req.params.id;
 	var body = req.body.comment;
 	var user = await login.login(req);
+	var name
+	var avatar
 	if(user){
 		avatar = user.avatar;
 		name = user.displayName;

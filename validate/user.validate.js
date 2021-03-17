@@ -1,4 +1,3 @@
-var db = require('../db');
 var login = require('./function')
 var User = require('../models/user.model')
 

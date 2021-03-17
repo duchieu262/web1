@@ -1,5 +1,4 @@
 var md5 = require('md5');
-var db = require('../db');
 var User = require('../models/user.model')
 
 module.exports.login = function(req, res){

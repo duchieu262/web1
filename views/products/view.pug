@@ -3,15 +3,11 @@ block content
 	h1 View product
 
 	.card.mt-5
-		.d-flex
-			img(src=product.image, alt='...', width= 500)
-			h1 &nbsp
-			h5 Description:
-			h1 &nbsp
-			h6.card-text= product.description
+		img(src=product.image, alt='...')
 		.card-body
 			h5.card-title= product.name
 			h2.card-text= product.price + '$'
+			h6.card-text= product.description
 			a.btn.btn-primary(href='/cart/add/'+product.id) Add to cart
 
 

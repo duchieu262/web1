@@ -1,0 +1,22 @@
+.login-form-container {
+    width: 300px;
+    margin: auto;
+}
+
+.registration-form-container {
+    width: 700px;
+    margin: auto;
+}
+.outer-area {
+    margin-top: 100px;
+    overflow: hidden;
+
+}
+.auth-box {
+    border: 3px solid lightgrey;
+    border-radius: 10px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    width: 600px;
+    margin: auto;
+}

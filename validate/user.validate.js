@@ -19,8 +19,6 @@ module.exports.postCreate = async function(req, res, next) {
 		errors.push('Display name is required.')
 	}
 	if(errors.length){
-		console.log('post')
-		console.log(req.body)
 		res.render('users/create',{
 			errors: errors,
 			values: req.body
@@ -32,7 +30,7 @@ module.exports.postCreate = async function(req, res, next) {
 
 module.exports.postEdit = async function(req, res, next) {
 	var errors = [];
-	user = await login.login(req)
+	user = await login(req)
 	if(req.body.username !== user.username){
 		if( await User.findOne({username: req.body.username})) {
 		errors.push('Username already exists')

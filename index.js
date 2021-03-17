@@ -5,13 +5,22 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/web1')
+mongoose.connect('mongodb://localhost/webapp', {
+	useUnifiedTopology: true,
+	useNewUrlParser: true
+}, (err) => {
+	if (err) {
+		console.log("Can't connect to database!")
+	} else {
+		console.log("Connected to database!")
+	}
+})
 
 var userRoute = require('./routes/user.route');
 var authRoute = require('./routes/auth.route');
 var productRoute = require('./routes/product.route');
 var logOutRoute = require('./routes/logout.route');
-var rigisterRoute = require('./routes/rigister.route')
+var rigisterRoute = require('./routes/register.route')
 
 var authMiddleware = require('./middlewares/auth.middleware');
 var sessionMiddleware = require('./middlewares/session.middleware');
@@ -32,9 +41,10 @@ app.use(sessionMiddleware);
 
 app.use(express.static('public'));
 
-app.get('/', function(req, res){
+app.get('/', async function(req, res){
+	const user = await login(req)
 	res.render('index', {
-		user: login.login(req)
+		user: user
 	});
 });
 

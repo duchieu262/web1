@@ -19,6 +19,8 @@ router.post('/create',
 	controller.postCreate
  );
 
+router.get('/edit', controller.edit);
+
 router.post('/edit',
 	upload.single('avatar'),
 	validate.postEdit,

@@ -6,7 +6,7 @@ html
 
 	body
 		nav.navbar.navbar-expand-lg.navbar-light.bg-light
-			a.navbar-brand(href='/') H-WEB
+			a.navbar-brand(href='/') F2 FOOD
 			button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
 				span.navbar-toggler-icon
 			#navbarNav.collapse.navbar-collapse
@@ -21,10 +21,15 @@ html
 						li.nav-item
 							a.nav-link(href='/auth/login') Login
 			if user
-				img(class="rounded-circle", src=user.avatar || "/images/default.logo", width=50, height= 50)
-				a(href="/users/edit")= user.displayName
-				span &nbsp
-				a(href="/Logout") Logout
+					a(href="/users/edit")
+						img(class="rounded-circle", src=user.avatar || "/images/default.logo", width=50, height= 50)
+					.ms-3
+						span Hi, &ensp;
+						a(href="/users/edit")= user.displayName
+						span &nbsp
+					.me-5
+					a(href="/Logout")
+						button.btn.btn-sm.btn-outline-danger.p-2 Logout
 
 		.container.pt-5
 			block content

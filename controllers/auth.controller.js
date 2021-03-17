@@ -5,7 +5,7 @@ module.exports.login = function(req, res){
 	if(req.signedCookies.userId){
 		res.redirect('/')
 	}
-	res.render('auth/login');
+	res.render('auth/login', { user: null});
 };
 
 module.exports.postLogin = async function(req, res){

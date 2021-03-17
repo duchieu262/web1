@@ -9,4 +9,4 @@ async function login(req) {
 		return user;
 	}
 }
-module.exports = { login };
+module.exports = login;

@@ -1,27 +1,28 @@
 extends ../layouts/common
 
 block content
-	h1 Create user
 
 	if errors
 		each error in errors
 			.alert.alert-danger= error
-
-	form(action="/register", method="POST", enctype="multipart/form-data")
-		.form-group
-			label Username
-			input.form-control(type="text", name="username", value = values ? values.username : "", autocomplete="off")
-		.form-group
-			label Password
-			input.form-control(type="password", name="password", value = values ? values.password : "")
-		.form-group
-			label Display Name
-			input.form-control(type="text", name="displayName", value = values ? values.displayName : "", autocomplete="off")
-		.form-group
-			label Phone
-			input.form-control(type="text", name="phone", value = values ? values.phone : "", autocomplete="off")
-		.form-group.mt-2
-			label Avatar
-			input.form-control-file(type="file", name="avatar")
-		button.mt-2.btn.btn-primary Create
-
+	.container
+		.outer-area
+			.auth-box.text-center
+				.login-form-container
+					h1 Register
+					form(action="/register", method="POST", enctype="multipart/form-data")
+						.form-group
+							label Username
+							input.form-control(type="text", name="username", value = values ? values.username : "", autocomplete="off")
+						.form-group
+							label Password
+							input.form-control(type="password", name="password", value = values ? values.password : "")
+						.form-group
+							label Display Name
+							input.form-control(type="text", name="displayName", value = values ? values.displayName : "", autocomplete="off")
+						.form-group
+							label Phone
+							input.form-control(type="text", name="phone", value = values ? values.phone : "", autocomplete="off")
+						button.btn.btn-sm.btn-outline-primary.mt-2 Register
+										span &nbsp
+					a(href="/register") or Login
